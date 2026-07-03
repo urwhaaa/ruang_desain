@@ -13,7 +13,7 @@ $layanan = $_GET['layanan'];
 $harga   = $_GET['harga'];
 $gambar  = $_GET['gambar'];
 
-// Cek apakah produk sudah ada di keranjang
+// Cek apakah layanan sudah ada di keranjang
 $cek = mysqli_query($koneksi,"
 SELECT *
 FROM keranjang
@@ -40,7 +40,12 @@ if(mysqli_num_rows($cek) == 0){
     )
     ");
 
+    if(!$insert){
+        die(mysqli_error($koneksi));
+    }
+
 }
 
+// Kembali ke halaman layanan dengan notifikasi
 header("Location: layanan.php?berhasil=1");
 exit;

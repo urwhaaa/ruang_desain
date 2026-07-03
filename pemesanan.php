@@ -7,9 +7,25 @@ if(!isset($_SESSION['user'])){
     exit;
 }
 
+$user_id = $_SESSION['user_id'];
+
+$user = mysqli_query($koneksi,"
+SELECT *
+FROM users
+WHERE id='$user_id'
+");
+
+$userData = mysqli_fetch_assoc($user);
 if(isset($_POST['kirim'])){
 
     $user_id = $_SESSION['user_id'];
+    $user = mysqli_query($koneksi,"
+SELECT nama, email
+FROM users
+WHERE id='$user_id'
+");
+
+$userData = mysqli_fetch_assoc($user);
 
     $nama = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $email = mysqli_real_escape_string($koneksi, $_POST['email']);
@@ -121,25 +137,37 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     <div class="form-group">
         <label>Nama Lengkap</label>
-        <input
-            type="text"
-            name="nama"
-            placeholder="Masukkan nama lengkap"
-            required>
+       <input
+type="text"
+name="nama"
+value="<?= htmlspecialchars($userData['nama']); ?>"
+readonly
+required>
     </div>
 
     <div class="form-group">
-        <label>No HP / WhatsApp</label>
-        <input
-            type="text"
-            name="no_hp"
-            placeholder="08xxxxxxxxxx"
-            required>
+        <label>Email</label>
+       <input
+type="email"
+name="email"
+value="<?= htmlspecialchars($userData['email']); ?>"
+readonly
+required>
     </div>
     <input
 type="hidden"
 name="layanan"
 value="<?= $_GET['layanan'] ?? ''; ?>">
+
+<div class="form-group">
+    <label>No HP / WhatsApp</label>
+    <input
+        type="text"
+        name="no_hp"
+        value="<?= htmlspecialchars($userData['no_hp'] ?? ''); ?>"
+        placeholder="08***"
+        required>
+</div>
 
 <div class="form-group">
     <label>Jenis Layanan</label>

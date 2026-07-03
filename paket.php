@@ -1,6 +1,7 @@
 <?php
 $layanan = $_GET['layanan'] ?? '';
 
+$mode_info = empty($layanan);
 switch($layanan){
 
     case "logo":
@@ -123,12 +124,19 @@ Rp <?= number_format($basic,0,",","."); ?>
 <li>✓ Pengerjaan 2 Hari</li>
 </ul>
 
-<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Basic&harga=<?= $basic ?>"
-class="btn-primary">
+<?php if($mode_info){ ?>
 
-Pesan Sekarang
-
+<a href="layanan.php" class="btn-primary">
+    Lihat Layanan
 </a>
+
+<?php } else { ?>
+
+<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Basic&harga=<?= $basic ?>" class="btn-primary">
+    Pesan Sekarang
+</a>
+
+<?php } ?>
 
 </div>
 
@@ -152,12 +160,19 @@ Rp <?= number_format($standar,0,",","."); ?>
 <li>✓ Mockup Gratis</li>
 </ul>
 
-<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Standar&harga=<?= $standar ?>"
-class="btn-primary">
+<?php if($mode_info){ ?>
 
-Pesan Sekarang
-
+<a href="layanan.php" class="btn-primary">
+    Lihat Layanan
 </a>
+
+<?php } else { ?>
+
+<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Standar&harga=<?= $standar ?>" class="btn-primary">
+    Pesan Sekarang
+</a>
+
+<?php } ?>
 
 </div>
 
@@ -179,13 +194,19 @@ Rp <?= number_format($premium,0,",","."); ?>
 <li>✓ Bonus Branding Kit</li>
 </ul>
 
-<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Premium&harga=<?= $premium ?>"
-class="btn-primary">
+<?php if($mode_info){ ?>
 
-Pesan Sekarang
-
+<a href="layanan.php" class="btn-primary">
+    Lihat Layanan
 </a>
 
+<?php } else { ?>
+
+<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Premium&harga=<?= $premium ?>" class="btn-primary">
+    Pesan Sekarang
+</a>
+
+<?php } ?>
 </div>
 
 </section>

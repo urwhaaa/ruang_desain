@@ -6,6 +6,7 @@ if(session_status() == PHP_SESSION_NONE){
 
 include "koneksi.php";
 
+$halaman = basename($_SERVER['PHP_SELF']);
 $jumlah_notif = 0;
 $jumlah_chat = 0;
 
@@ -49,11 +50,25 @@ if(isset($_SESSION['user_id'])){
     </div>
 
     <nav>
-        <a href="index.php">Beranda</a>
-        <a href="layanan.php">Layanan</a>
-        <a href="portofolio.php">Portofolio</a>
-        <a href="paket.php">Paket</a>
-        <a href="tentang.php">Tentang Kami</a>
+        <a href="index.php" class="<?= ($halaman == 'index.php') ? 'active' : '' ?>">
+            Beranda
+        </a>
+
+        <a href="layanan.php" class="<?= ($halaman == 'layanan.php' || $halaman == 'pemesanan.php') ? 'active' : '' ?>">
+            Layanan
+        </a>
+
+        <a href="portofolio.php" class="<?= ($halaman == 'portofolio.php') ? 'active' : '' ?>">
+            Portofolio
+        </a>
+
+        <a href="paket.php" class="<?= ($halaman == 'paket.php') ? 'active' : '' ?>">
+            Paket
+        </a>
+
+        <a href="tentang.php" class="<?= ($halaman == 'tentang.php') ? 'active' : '' ?>">
+            Tentang Kami
+        </a>
     </nav>
 
    <div class="icons">
@@ -82,9 +97,39 @@ if(isset($_SESSION['user_id'])){
 
 </a>
 
-    <a href="keranjang.php">
-        <i class="fa-solid fa-cart-shopping"></i>
-    </a>
+<?php
+
+$jumlahKeranjang = 0;
+
+if(isset($_SESSION['user_id'])){
+
+    $user_id = $_SESSION['user_id'];
+
+    $q = mysqli_query($koneksi,"
+    SELECT COUNT(*) AS total
+    FROM keranjang
+    WHERE user_id='$user_id'
+    ");
+
+    if($q){
+        $d = mysqli_fetch_assoc($q);
+        $jumlahKeranjang = $d['total'];
+    }
+
+}
+?>
+
+<a href="keranjang.php" class="notif-icon">
+
+    <i class="fa-solid fa-cart-shopping"></i>
+
+   <?php if($jumlahKeranjang > 0){ ?>
+<span class="notif-badge">
+    <?= $jumlahKeranjang > 99 ? '99+' : $jumlahKeranjang; ?>
+</span>
+<?php } ?>
+
+</a>
 
     <a href="profil.php">
         <i class="fa-regular fa-user"></i>

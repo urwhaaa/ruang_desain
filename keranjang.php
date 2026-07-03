@@ -2,7 +2,14 @@
 session_start();
 include "koneksi.php";
 
-$query = mysqli_query($koneksi,"SELECT * FROM keranjang ORDER BY id DESC");
+$user_id = $_SESSION['user_id'];
+
+$query = mysqli_query($koneksi,"
+SELECT *
+FROM keranjang
+WHERE user_id='$user_id'
+ORDER BY id DESC
+");
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +38,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 <section class="cart-container">
 
+<form action="checkout.php" method="POST">
+
 <div class="cart-items">
 
 <div class="cart-top">
@@ -46,6 +55,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 <input
 type="checkbox"
+name="keranjang[]"
+value="<?= $row['id']; ?>"
 class="item-check"
 data-id="<?= $row['id']; ?>"
 data-harga="<?= $row['harga']; ?>"
@@ -64,7 +75,9 @@ Rp <?= number_format($row['harga'],0,',','.'); ?>
 
 <div class="qty-box">
 
-<button class="minus"
+<button
+type="button"
+class="minus"
 data-id="<?= $row['id']; ?>">
 -
 </button>
@@ -73,8 +86,7 @@ data-id="<?= $row['id']; ?>">
 <?= $row['jumlah']; ?>
 </span>
 
-<button class="plus"
-data-id="<?= $row['id']; ?>">
+<button type="button" class="plus" data-id="<?= $row['id']; ?>">
 +
 </button>
 
@@ -114,11 +126,13 @@ onclick="return confirm('Hapus layanan ini?')">
 <strong id="totalHarga">Rp 0</strong>
 </div>
 
-<a href="pemesanan.php" class="checkout-btn">
+<button type="submit" class="checkout-btn">
 Lanjut Pemesanan
-</a>
+</button>
 
 </div>
+
+</form>
 
 </section>
 <script>

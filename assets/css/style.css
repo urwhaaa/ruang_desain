@@ -51,6 +51,12 @@ nav a{
 nav a:hover{
     color:#6d46d6;
 }
+nav a.active{
+    color:#6d46d6;
+    font-weight:700;
+    position:relative;
+}
+
 
 .icons{
     display:flex;
@@ -1837,11 +1843,7 @@ DETAIL PESANAN
 
 }
 
-.detail-item strong{
-
-    color:#222;
-
-}
+.detail-item strong{color:#222;}
 
 .detail-link{
 
@@ -1855,48 +1857,19 @@ DETAIL PESANAN
 
 }
 
-.detail-link:hover{
-
-    background:#5535b5;
-
-}
+.detail-link:hover{background:#5535b5;}
 
 .badge{
-
+    
     padding:7px 14px;
     border-radius:20px;
     color:white;
     font-size:13px;
     font-weight:600;
-
 }
+.badge.menunggu{background:#f39c12;}
+.badge.diproses{background:#3498db;}
+.badge.revisi{background:#e74c3c;}
+.badge.selesai{background:#27ae60;}
+.badge.bayar{background:#2ecc71;}
 
-.badge.menunggu{
-
-    background:#f39c12;
-
-}
-
-.badge.diproses{
-
-    background:#3498db;
-
-}
-
-.badge.revisi{
-
-    background:#e74c3c;
-
-}
-
-.badge.selesai{
-
-    background:#27ae60;
-
-}
-
-.badge.bayar{
-
-    background:#2ecc71;
-
-}

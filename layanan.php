@@ -56,11 +56,12 @@ $kategori = $_GET['kategori'] ?? 'semua';
 
 <section class="layanan-grid">
 <?php if($kategori == 'semua' || $kategori == 'logo'): ?>
-<div class="layanan-card logo">
+<div class="layanan-card logo"
+onclick="openModal('logo')">
 <img src="https://i.pinimg.com/736x/71/f4/39/71f4398426a645d009ab3cfe8a9d4641.jpg">
 <h3>Desain Logo</h3>
 <p>Logo profesional untuk UMKM dan perusahaan.</p>
-<span>Rp 90.000</span>
+
 
 <div class="action-btn">
 
@@ -79,11 +80,11 @@ class="btn-cart">
 <?php endif; ?>
 
 <?php if($kategori == 'semua' || $kategori == 'poster'): ?>
-<div class="layanan-card poster">
-<img src="https://i.pinimg.com/736x/eb/1d/65/eb1d650c45315882771aaf0ea29b06d2.jpg">
+<div class="layanan-card poster" onclick="openModal('poster')">
+<img class="layanan-img"src="https://i.pinimg.com/736x/eb/1d/65/eb1d650c45315882771aaf0ea29b06d2.jpg">
 <h3>Desain Poster</h3>
 <p>Poster promosi produk dan event.</p>
-<span>Rp 100.000</span>
+
 
 <div class="action-btn">
 
@@ -92,7 +93,7 @@ class="btn-cart">
 Lihat Paket
 </a>
 
-<a href="tambah_keranjang.php?layanan=Desain%20Logo&harga=90000&gambar=logo.png"
+<a href="tambah_keranjang.php?layanan=Desain%20Poster&harga=50000&gambar=poster.png"
 class="btn-cart">
     <i class="fa-solid fa-cart-shopping"></i>
 </a>
@@ -102,11 +103,12 @@ class="btn-cart">
 <?php endif; ?>
 
 <?php if($kategori == 'semua' || $kategori == 'feed'): ?>
-<div class="layanan-card feed">
+<div class="layanan-card feed"
+onclick="openModal('feed')">
 <img src="https://i.pinimg.com/736x/93/66/47/936647fbb83ad7f6ae376ae354d37b1b.jpg">
 <h3>Feed Instagram</h3>
 <p>Feed Instagram modern dan menarik.</p>
-<span>Rp 70.000</span>
+
 
 <div class="action-btn">
 
@@ -115,21 +117,20 @@ class="btn-cart">
 Lihat Paket
 </a>
 
-<a href="tambah_keranjang.php?layanan=Desain%20Logo&harga=90000&gambar=logo.png"
+<a href="tambah_keranjang.php?layanan=Feed%20Instagram&harga=70000&gambar=feed.png"
 class="btn-cart">
     <i class="fa-solid fa-cart-shopping"></i>
 </a>
-
 </div>
 </div>
 <?php endif; ?>
 
 <?php if($kategori == 'semua' || $kategori == 'banner'): ?>
-<div class="layanan-card banner">
+<div class="layanan-card banner" onclick="openModal('banner')">
 <img src="https://i.pinimg.com/1200x/57/93/71/579371d3b53cd1a215f5871ea648b2ee.jpg">
 <h3>Banner</h3>
 <p>Banner promosi online maupun offline.</p>
-<span>Rp 60.000</span>
+
 
 <div class="action-btn">
 
@@ -138,7 +139,7 @@ class="btn-cart">
 Lihat Paket
 </a>
 
-<a href="tambah_keranjang.php?layanan=Desain%20Logo&harga=90000&gambar=logo.png"
+<a href="tambah_keranjang.php?layanan=Banner&harga=60000&gambar=banner.png"
 class="btn-cart">
     <i class="fa-solid fa-cart-shopping"></i>
 </a>
@@ -148,11 +149,12 @@ class="btn-cart">
 <?php endif; ?>
 
 <?php if($kategori == 'semua' || $kategori == 'uiux'): ?>
-<div class="layanan-card uiux">
+<div class="layanan-card uiux"
+onclick="openModal('uiux')">
 <img src="https://i.pinimg.com/736x/83/b4/1c/83b41caad8b8f92639df49c6aec99fe2.jpg">
 <h3>UI/UX Design</h3>
 <p>Desain aplikasi dan website modern.</p>
-<span>Rp 250.000</span>
+
 
 <div class="action-btn">
 
@@ -171,11 +173,12 @@ class="btn-cart">
 <?php endif; ?>
 
 <?php if($kategori == 'semua' || $kategori == 'branding'): ?>
-<div class="layanan-card branding">
+<div class="layanan-card branding"
+onclick="openModal('branding')">
 <img src="https://i.pinimg.com/736x/21/0a/b5/210ab53bbd9d48baa15548658da82af1.jpg">
 <h3>Branding Kit</h3>
 <p>Identitas visual lengkap untuk bisnis.</p>
-<span>Rp 300.000</span>
+
 
 <div class="action-btn">
 <a href="paket.php?layanan=branding" class="btn-pesan">
@@ -183,7 +186,7 @@ class="btn-cart">
 Lihat Paket
 </a>
 
-<a href="tambah_keranjang.php?layanan=Desain%20Logo&harga=90000&gambar=logo.png"
+<a href="tambah_keranjang.php?layanan=Branding%20Kit&harga=300000&gambar=branding.png"
 class="btn-cart">
     <i class="fa-solid fa-cart-shopping"></i>
 </a>
