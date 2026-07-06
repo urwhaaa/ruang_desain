@@ -81,6 +81,6 @@ membantu bisnis berkembang melalui visual yang kuat.
 </div>
 
 </section>
-
+<?php include "footer.php"; ?>
 </body>
 </html>

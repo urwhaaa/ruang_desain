@@ -2,50 +2,52 @@
 session_start();
 include "koneksi.php";
 
-if(!isset($_SESSION['user'])){
+// cek login (konsisten pakai user_id)
+if(!isset($_SESSION['user_id'])){
     header("Location: login.php");
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
 
-$result = mysqli_query($koneksi,"
-SELECT *
-FROM users
-WHERE id='$user_id'
-") or die(mysqli_error($koneksi));
+/* ambil data user */
+$query = mysqli_query($koneksi, "SELECT * FROM users WHERE id='$user_id'");
+$user = mysqli_fetch_assoc($query);
 
-$user = mysqli_fetch_assoc($result);
-
+/* total pesanan */
 $total = mysqli_fetch_assoc(mysqli_query($koneksi,"
-SELECT COUNT(*) total
+SELECT COUNT(*) as total
 FROM pesanan
 WHERE user_id='$user_id'
 "))['total'];
 
+/* diproses */
 $diproses = mysqli_fetch_assoc(mysqli_query($koneksi,"
-SELECT COUNT(*) total
+SELECT COUNT(*) as total
 FROM pesanan
 WHERE user_id='$user_id'
 AND status='Diproses'
 "))['total'];
 
+/* selesai */
 $selesai = mysqli_fetch_assoc(mysqli_query($koneksi,"
-SELECT COUNT(*) total
+SELECT COUNT(*) as total
 FROM pesanan
 WHERE user_id='$user_id'
 AND status='Selesai'
 "))['total'];
 
+/* belum bayar */
 $belum = mysqli_fetch_assoc(mysqli_query($koneksi,"
-SELECT COUNT(*) total
+SELECT COUNT(*) as total
 FROM pesanan
 WHERE user_id='$user_id'
 AND status_pembayaran='Belum Bayar'
 "))['total'];
 
+/* aktivitas */
 $aktivitas = mysqli_query($koneksi,"
-SELECT layanan,status,created_at
+SELECT layanan, status, created_at
 FROM pesanan
 WHERE user_id='$user_id'
 ORDER BY created_at DESC
@@ -78,7 +80,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 <div class="profile-left">
 
-<img src="assets/img/user.png">
+<?php
+$foto = !empty($user['foto']) ? $user['foto'] : 'user.png';
+?>
+
+<img
+src="assets/css/img/profile/<?= htmlspecialchars($foto); ?>"
+alt="User">
 
 <div>
 

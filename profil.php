@@ -1,3 +1,24 @@
+<?php
+session_start();
+include "koneksi.php";
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$id = $_SESSION['user_id'];
+
+$query = mysqli_query($koneksi, "SELECT * FROM users WHERE id='$id'");
+$user = mysqli_fetch_assoc($query);
+
+if (!$user) {
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -23,26 +44,33 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 <section class="profile-container">
 
-    <div class="profile-card">
+  <!-- Card User -->
+<div class="profile-card">
 
-        <img src="assets/img/user.png" alt="User">
+<?php
+$foto = !empty($user['foto']) ? $user['foto'] : 'user.png';
+?>
 
-        <h2>Urwaaa</h2>
+<img src="assets/css/img/profile/<?= htmlspecialchars($foto); ?>" alt="User">
 
-        <p>urwaaa@gmail.com</p>
+<h2><?= htmlspecialchars($user['nama']); ?></h2>
 
-        <a href="edit_profil.php" class="profile-btn">
-            Edit Profil
-        </a>
+<p><?= htmlspecialchars($user['email']); ?></p>
 
-    </div>
+<div class="join-date">
+    <small>Bergabung sejak</small><br>
+    <strong><?= date('d F Y', strtotime($user['created_at'])); ?></strong>
+</div>
 
+</div>
+
+    <!-- Menu -->
     <div class="profile-menu">
 
-<a href="dashboard_profil.php">
-    <i class="fa-solid fa-user"></i>
-    Profil Saya
-</a>
+        <a href="dashboard_profil.php">
+            <i class="fa-solid fa-user"></i>
+            Profil Saya
+        </a>
 
         <a href="pesanan_saya.php">
             <i class="fa-solid fa-receipt"></i>
@@ -54,7 +82,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
             Ganti Password
         </a>
 
-        <a href="logout.php">
+        <a href="logout.php" onclick="return confirm('Yakin ingin logout?')">
             <i class="fa-solid fa-right-from-bracket"></i>
             Logout
         </a>

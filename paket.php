@@ -57,7 +57,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 <h1><?= $nama_layanan; ?></h1>
 
-<p>Pilih paket terbaik sesuai kebutuhan Anda.</p>
+<p>
+    Harga Paket Dapat Berubah Sesuai Jenis Layanan Yang Dipilih. Silahkan Pilih Paket Terbaik Sesuai Kebutuhan Anda!
+</p>
 
 <section class="package-grid">
 
@@ -208,7 +210,8 @@ Rp <?= number_format($premium,0,",","."); ?>
 
 <?php } ?>
 </div>
-
 </section>
+</section>
+<?php include "footer.php"; ?>
 </body>
 </html>
