@@ -32,28 +32,49 @@ $userData = mysqli_fetch_assoc($user);
     $no_hp = mysqli_real_escape_string($koneksi, $_POST['no_hp']);
     $layanan = mysqli_real_escape_string($koneksi, $_POST['layanan']);
     $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
-    $pembayaran = mysqli_real_escape_string($koneksi, $_POST['pembayaran']);
+    $pembayaran = mysqli_real_escape_string($koneksi,$_POST['pembayaran']);
 
-    $harga = $_POST['harga'];
-    $paket = $_POST['paket'];
+$harga = $_POST['harga'];
+$paket = $_POST['paket'];
 
-    $file = "";
+$file = "";
+$bukti = "";
 
-    if(isset($_FILES['referensi']) && $_FILES['referensi']['name'] != ""){
+/* Upload Referensi */
 
-        if(!is_dir("uploads")){
-            mkdir("uploads");
-        }
+if(isset($_FILES['referensi']) && $_FILES['referensi']['name']!=""){
 
-        $file = time()."_".$_FILES['referensi']['name'];
-
-        move_uploaded_file(
-            $_FILES['referensi']['tmp_name'],
-            "uploads/".$file
-        );
+    if(!is_dir("uploads")){
+        mkdir("uploads");
     }
 
-    $simpan = mysqli_query($koneksi,"INSERT INTO pesanan(
+    $file=time()."_".$_FILES['referensi']['name'];
+
+    move_uploaded_file(
+        $_FILES['referensi']['tmp_name'],
+        "uploads/".$file
+    );
+}
+
+/* Upload Bukti Pembayaran */
+
+if(isset($_FILES['bukti_pembayaran']) && $_FILES['bukti_pembayaran']['name']!=""){
+
+    if(!is_dir("uploads/pembayaran")){
+        mkdir("uploads/pembayaran",0777,true);
+    }
+
+    $bukti=time()."_".$_FILES['bukti_pembayaran']['name'];
+
+    move_uploaded_file(
+        $_FILES['bukti_pembayaran']['tmp_name'],
+        "uploads/pembayaran/".$bukti
+    );
+}
+
+   $simpan = mysqli_query($koneksi,"
+INSERT INTO pesanan(
+
 user_id,
 nama_lengkap,
 email,
@@ -63,8 +84,12 @@ paket,
 harga,
 deskripsi,
 file_referensi,
-pembayaran
-) VALUES(
+pembayaran,
+bukti_pembayaran,
+status_pembayaran
+
+)VALUES(
+
 '$user_id',
 '$nama',
 '$email',
@@ -74,9 +99,11 @@ pembayaran
 '$harga',
 '$deskripsi',
 '$file',
-'$pembayaran'
-)");
+'$pembayaran',
+'$bukti',
+'Menunggu Verifikasi'
 
+)");
     if($simpan){
 
         echo "<script>
@@ -208,32 +235,107 @@ value="<?= $_GET['layanan'] ?? ''; ?>">
         <input type="file" name="referensi">
     </div>
 
-    <div class="form-group">
-        <label>Metode Pembayaran</label>
+<div class="form-group">
 
-        <div class="payment-method">
+    <label>Metode Pembayaran</label>
 
-            <label>
-                <input
-                    type="radio"
-                    name="pembayaran"
-                    value="Transfer Bank"
-                    required>
+    <div class="payment-method">
 
-                Transfer Bank
-            </label>
+        <label class="payment-card">
+            <input type="radio"
+                   name="pembayaran"
+                   value="Transfer Bank"
+                   onclick="showPayment('bank')"
+                   required>
 
-            <label>
-                <input
-                    type="radio"
-                    name="pembayaran"
-                    value="E-Wallet">
+            <div class="payment-content">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Transfer Bank</span>
+            </div>
+        </label>
 
-                E-Wallet
-            </label>
+        <label class="payment-card">
+            <input type="radio"
+                   name="pembayaran"
+                   value="E-Wallet"
+                   onclick="showPayment('ewallet')">
 
-        </div>
+            <div class="payment-content">
+                <i class="fa-solid fa-wallet"></i>
+                <span>E-Wallet</span>
+            </div>
+        </label>
+
     </div>
+
+    <!-- BANK -->
+    <div id="bank-list" class="payment-list">
+
+        <h4>Pilih Bank</h4>
+
+        <div class="payment-option" onclick="pilihBank('BCA','1234567890','Ruang Desain')">
+            🏦 Bank BCA
+        </div>
+
+        <div class="payment-option" onclick="pilihBank('BRI','9876543210','Ruang Desain')">
+            🏦 Bank BRI
+        </div>
+
+        <div class="payment-option" onclick="pilihBank('BNI','4567891230','Ruang Desain')">
+            🏦 Bank BNI
+        </div>
+
+        <div class="payment-option" onclick="pilihBank('Mandiri','111222333444','Ruang Desain')">
+            🏦 Bank Mandiri
+        </div>
+
+    </div>
+
+    <!-- EWALLET -->
+    <div id="ewallet-list" class="payment-list">
+
+        <h4>Pilih E-Wallet</h4>
+
+        <div class="payment-option" onclick="pilihBank('DANA','081234567890','Ruang Desain')">
+            💙 DANA
+        </div>
+
+        <div class="payment-option" onclick="pilihBank('OVO','081234567891','Ruang Desain')">
+            💜 OVO
+        </div>
+
+        <div class="payment-option" onclick="pilihBank('GoPay','081234567892','Ruang Desain')">
+            💚 GoPay
+        </div>
+
+        <div class="payment-option" onclick="pilihBank('ShopeePay','081234567893','Ruang Desain')">
+            🧡 ShopeePay
+        </div>
+
+    </div>
+
+    <div id="payment-info"></div>
+    <div id="upload-payment" style="display:none;">
+
+    <div class="form-group">
+
+        <label>Upload Bukti Pembayaran</label>
+
+        <input
+            type="file"
+            name="bukti_pembayaran"
+            accept=".jpg,.jpeg,.png,.pdf">
+
+        <small class="payment-text">
+
+            Upload screenshot bukti transfer atau bukti pembayaran.
+
+        </small>
+
+    </div>
+
+</div>
+</div>
 
     <button
         type="submit"
@@ -246,6 +348,96 @@ value="<?= $_GET['layanan'] ?? ''; ?>">
 
 </form>
 </section>
+<script>
 
+function showPayment(type){
+
+    document.getElementById("bank-list").style.display = "none";
+    document.getElementById("ewallet-list").style.display = "none";
+
+    document.getElementById("payment-info").innerHTML = "";
+    document.getElementById("upload-payment").style.display = "none";
+
+    if(type == "bank"){
+        document.getElementById("bank-list").style.display = "block";
+    }else{
+        document.getElementById("ewallet-list").style.display = "block";
+    }
+
+}
+
+function pilihBank(nama, nomor, pemilik){
+
+    document.getElementById("payment-info").innerHTML = `
+
+    <div class="payment-detail">
+
+        <div class="payment-header">
+            <h3>${nama}</h3>
+        </div>
+
+        <div class="payment-box">
+
+            <label>Nomor Rekening / Nomor Tujuan</label>
+
+            <div class="copy-box">
+
+                <span id="rekening">${nomor}</span>
+
+                <button
+                    type="button"
+                    class="copy-btn"
+                    onclick="copyRekening()">
+
+                    <i class="fa-regular fa-copy"></i>
+                    Salin
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="payment-box">
+
+            <label>Atas Nama</label>
+
+            <strong>${pemilik}</strong>
+
+        </div>
+
+        <div class="payment-box">
+
+            <label>Total Pembayaran</label>
+
+            <strong class="price">
+                Rp <?= number_format($_GET['harga'] ?? 0,0,',','.'); ?>
+            </strong>
+
+        </div>
+
+        <div class="payment-note">
+            <i class="fa-solid fa-circle-info"></i>
+            Silakan transfer sesuai nominal di atas, lalu upload bukti pembayaran.
+        </div>
+
+    </div>
+
+    `;
+
+    document.getElementById("upload-payment").style.display = "block";
+
+}
+
+function copyRekening(){
+
+    const rekening = document.getElementById("rekening").innerText;
+
+    navigator.clipboard.writeText(rekening);
+
+    alert("Nomor rekening berhasil disalin!");
+
+}
+</script>
 </body>
 </html>

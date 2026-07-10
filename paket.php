@@ -1,35 +1,44 @@
 <?php
 $layanan = $_GET['layanan'] ?? '';
-
 $mode_info = empty($layanan);
+
+$gambar = "";
+
 switch($layanan){
 
     case "logo":
         $nama_layanan = "Desain Logo";
+        $gambar = "https://i.pinimg.com/736x/71/f4/39/71f4398426a645d009ab3cfe8a9d4641.jpg";
         break;
 
     case "poster":
         $nama_layanan = "Desain Poster";
+        $gambar = "https://i.pinimg.com/736x/eb/1d/65/eb1d650c45315882771aaf0ea29b06d2.jpg";
         break;
 
     case "feed":
         $nama_layanan = "Feed Instagram";
+        $gambar = "https://i.pinimg.com/736x/93/66/47/936647fbb83ad7f6ae376ae354d37b1b.jpg";
         break;
 
     case "banner":
         $nama_layanan = "Banner";
+        $gambar = "https://i.pinimg.com/1200x/57/93/71/579371d3b53cd1a215f5871ea648b2ee.jpg";
         break;
 
     case "uiux":
         $nama_layanan = "UI/UX Design";
+        $gambar = "https://i.pinimg.com/736x/83/b4/1c/83b41caad8b8f92639df49c6aec99fe2.jpg";
         break;
 
     case "branding":
         $nama_layanan = "Branding Kit";
+        $gambar = "https://i.pinimg.com/736x/21/0a/b5/210ab53bbd9d48baa15548658da82af1.jpg";
         break;
 
     default:
         $nama_layanan = "Layanan Desain";
+        $gambar = "";
 }
 ?>
 
@@ -134,9 +143,18 @@ Rp <?= number_format($basic,0,",","."); ?>
 
 <?php } else { ?>
 
-<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Basic&harga=<?= $basic ?>" class="btn-primary">
+<div class="package-action">
+
+<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Basic&harga=<?= $basic ?>"
+class="btn-primary">
     Pesan Sekarang
 </a>
+
+<a href="tambah_keranjang.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Basic&harga=<?= $basic ?>&gambar=<?= urlencode($gambar) ?>" class="btn-cart">
+    <i class="fa-solid fa-cart-shopping"></i>
+</a>
+
+</div>
 
 <?php } ?>
 
@@ -170,9 +188,18 @@ Rp <?= number_format($standar,0,",","."); ?>
 
 <?php } else { ?>
 
-<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Standar&harga=<?= $standar ?>" class="btn-primary">
+<div class="package-action">
+
+<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Standar&harga=<?= $standar ?>"
+class="btn-primary">
     Pesan Sekarang
 </a>
+
+<a href="tambah_keranjang.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Standar&harga=<?= $standar ?>&gambar=<?= urlencode($gambar) ?>" class="btn-cart">
+    <i class="fa-solid fa-cart-shopping"></i>
+</a>
+
+</div>
 
 <?php } ?>
 
@@ -204,9 +231,18 @@ Rp <?= number_format($premium,0,",","."); ?>
 
 <?php } else { ?>
 
-<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Premium&harga=<?= $premium ?>" class="btn-primary">
+<div class="package-action">
+
+<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Premium&harga=<?= $premium ?>"
+class="btn-primary">
     Pesan Sekarang
 </a>
+
+<a href="tambah_keranjang.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Premium&harga=<?= $premium ?>&gambar=<?= urlencode($gambar) ?>" class="btn-cart">
+    <i class="fa-solid fa-cart-shopping"></i>
+</a>
+
+</div>
 
 <?php } ?>
 </div>

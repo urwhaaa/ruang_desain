@@ -91,8 +91,8 @@
         <div class="footer-box">
             <h3>Kontak</h3>
 
-            <p>📍 Samarinda, Kalimantan Timur</p>
-            <p>📞 08xxxxxxxxxx</p>
+            <p>📍 Mataram, Lombok NTB</p>
+            <p>📞 082146495554</p>
             <p>✉️ ruangdesain@gmail.com</p>
         </div>
 

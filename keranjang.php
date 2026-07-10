@@ -63,11 +63,15 @@ data-harga="<?= $row['harga']; ?>"
 data-jumlah="<?= $row['jumlah']; ?>">
 </div>
 
-<img src="assets/img/<?= $row['gambar']; ?>" width="120">
+<img src="<?= $row['gambar']; ?>" class="cart-img">
 
 <div class="cart-info">
 
 <h3><?= $row['layanan']; ?></h3>
+
+<p class="cart-paket">
+    Paket : <strong><?= $row['paket']; ?></strong>
+</p>
 
 <span>
 Rp <?= number_format($row['harga'],0,',','.'); ?>
