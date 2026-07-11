@@ -45,7 +45,7 @@ if(count($data) == 1){
 
     header("Location: pemesanan.php?layanan="
         . urlencode($item['layanan'])
-        . "&paket=Checkout"
+        . "&paket=" . urlencode($item['paket'])
         . "&harga=" . $item['subtotal']);
 
     exit;

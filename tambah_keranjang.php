@@ -69,5 +69,5 @@ if(mysqli_num_rows($cek) == 0){
 
 }
 
-header("Location: keranjang.php");
+header("Location: paket.php?layanan=logo&success=1");
 exit;

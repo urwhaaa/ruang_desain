@@ -56,7 +56,80 @@ switch($layanan){
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style> 
+    /* Overlay */
+.popup-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.45);
+    z-index: 9998;
+}
 
+/* Popup */
+.popup-success{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,.2);
+    z-index: 9999;
+    animation: popupShow .3s ease;
+}
+
+.popup-success i{
+    font-size: 65px;
+    color: #22c55e;
+    margin-bottom: 15px;
+}
+
+.popup-success h3{
+    margin: 0;
+    font-size: 24px;
+    color: #222;
+}
+
+.popup-success p{
+    margin: 12px 0 25px;
+    color: #666;
+    font-size: 15px;
+}
+
+.popup-success button{
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #7c3aed;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.popup-success button:hover{
+    background: #6d28d9;
+}
+
+@keyframes popupShow{
+    from{
+        opacity:0;
+        transform:translate(-50%,-45%) scale(.9);
+    }
+    to{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1);
+    }
+}
+</style>
 </head>
 <body>
 
@@ -249,5 +322,25 @@ class="btn-primary">
 </section>
 </section>
 <?php include "footer.php"; ?>
+<?php if(isset($_GET['success'])): ?>
+
+<div id="popupOverlay" class="popup-overlay"></div>
+
+<div id="popupSuccess" class="popup-success">
+    <i class="fa-solid fa-circle-check"></i>
+    <h3>Berhasil!</h3>
+    <p>Paket berhasil ditambahkan ke keranjang.</p>
+
+    <button onclick="tutupPopup()">OK</button>
+</div>
+
+<script>
+function tutupPopup(){
+    document.getElementById("popupOverlay").style.display = "none";
+    document.getElementById("popupSuccess").style.display = "none";
+}
+</script>
+
+<?php endif; ?>
 </body>
 </html>

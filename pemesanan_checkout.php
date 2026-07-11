@@ -234,10 +234,14 @@ required>
 
 <div class="checkout-left">
 
-<h4><?= $item['layanan']; ?></h4>
+<h4><?= htmlspecialchars($item['layanan']); ?></h4>
+
+<p class="checkout-paket">
+    Paket : <strong><?= htmlspecialchars($item['paket']); ?></strong>
+</p>
 
 <small>
-Jumlah : <?= $item['jumlah']; ?>
+    Jumlah : <?= $item['jumlah']; ?>
 </small>
 
 </div>
