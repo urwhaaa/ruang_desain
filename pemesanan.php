@@ -26,16 +26,36 @@ WHERE id='$user_id'
 ");
 
 $userData = mysqli_fetch_assoc($user);
+$layanan = $_GET['layanan'] ?? '';
+$paket = $_GET['paket'] ?? '';
 
+$harga = 0;
+
+if($layanan != "" && $paket != ""){
+
+    $queryHarga = mysqli_query($koneksi,"
+        SELECT harga 
+        FROM layanan 
+        WHERE nama_layanan='$layanan'
+        AND paket='$paket'
+    ");
+
+    $dataHarga = mysqli_fetch_assoc($queryHarga);
+
+    if($dataHarga){
+        $harga = $dataHarga['harga'];
+    }
+
+}
     $nama = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $email = mysqli_real_escape_string($koneksi, $_POST['email']);
     $no_hp = mysqli_real_escape_string($koneksi, $_POST['no_hp']);
     $layanan = mysqli_real_escape_string($koneksi, $_POST['layanan']);
+    $paket = mysqli_real_escape_string($koneksi, $_POST['paket']);
     $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
     $pembayaran = mysqli_real_escape_string($koneksi,$_POST['pembayaran']);
 
-$harga = $_POST['harga'];
-$paket = $_POST['paket'];
+
 
 $file = "";
 $bukti = "";
@@ -216,7 +236,7 @@ value="<?= $_GET['layanan'] ?? ''; ?>">
     <label>Harga</label>
     <input
         type="text"
-        value="Rp <?= number_format($_GET['harga'] ?? 0,0,',','.'); ?>"
+        value="Rp <?= number_format((int)$harga,0,',','.') ?>"
         readonly>
 </div>
 

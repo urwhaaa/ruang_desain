@@ -1,6 +1,11 @@
 <?php
 $kategori = $_GET['kategori'] ?? 'semua';
 ?>
+<?php
+include "koneksi.php";
+
+$kategori = $_GET['kategori'] ?? 'semua';
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -39,111 +44,80 @@ $kategori = $_GET['kategori'] ?? 'semua';
 ?>
 
 <div class="kategori-menu">
-    <a href="layanan.php?kategori=semua" class="<?= $kategori=='semua'?'aktif':'' ?>">Semua</a>
 
-    <a href="layanan.php?kategori=logo" class="<?= $kategori=='logo'?'aktif':'' ?>">Logo</a>
+<a href="layanan.php?kategori=semua"
+class="<?= $kategori=='semua'?'aktif':'' ?>">
+Semua
+</a>
 
-    <a href="layanan.php?kategori=poster" class="<?= $kategori=='poster'?'aktif':'' ?>">Poster</a>
+<?php
 
-    <a href="layanan.php?kategori=feed" class="<?= $kategori=='feed'?'aktif':'' ?>">Feed IG</a>
+$qKategori=mysqli_query($koneksi,"
+SELECT DISTINCT kategori
+FROM layanan
+ORDER BY kategori
+");
 
-    <a href="layanan.php?kategori=banner" class="<?= $kategori=='banner'?'aktif':'' ?>">Banner</a>
+while($k=mysqli_fetch_assoc($qKategori)){
 
-    <a href="layanan.php?kategori=uiux" class="<?= $kategori=='uiux'?'aktif':'' ?>">UI/UX</a>
+?>
+
+<a
+href="layanan.php?kategori=<?= urlencode($k['kategori']); ?>"
+class="<?= $kategori==$k['kategori']?'aktif':'' ?>">
+
+<?= $k['kategori']; ?>
+
+</a>
+
+<?php } ?>
+
 </div>
 
 <section class="layanan-grid">
-<?php if($kategori == 'semua' || $kategori == 'logo'): ?>
-<div class="layanan-card logo"
-onclick="openModal('logo')">
-<img src="https://i.pinimg.com/736x/71/f4/39/71f4398426a645d009ab3cfe8a9d4641.jpg">
-<h3>Desain Logo</h3>
-<p>Logo profesional untuk UMKM dan perusahaan.</p>
+<?php
 
+$sql="SELECT * FROM layanan";
 
-<div class="action-btn">
+if($kategori!="semua"){
 
-<a href="paket.php?layanan=logo" class="btn-primary">
-<i class="fa-solid fa-layer-group"></i>
-Lihat Paket
-</a>
+$sql.=" WHERE kategori='$kategori'";
 
-</div>
-</div>
-<?php endif; ?>
+}
 
-<?php if($kategori == 'semua' || $kategori == 'poster'): ?>
-<div class="layanan-card poster" onclick="openModal('poster')">
-<img class="layanan-img"src="https://i.pinimg.com/736x/eb/1d/65/eb1d650c45315882771aaf0ea29b06d2.jpg">
-<h3>Desain Poster</h3>
-<p>Poster promosi produk dan event.</p>
+$sql.=" ORDER BY id DESC";
 
+$data=mysqli_query($koneksi,$sql);
 
-<div class="action-btn">
+while($row=mysqli_fetch_assoc($data)){
 
-<a href="paket.php?layanan=poster" class="btn-primary">
-<i class="fa-solid fa-layer-group"></i>
-Lihat Paket
-</a>
+?>
 
-</div>
-</div>
-<?php endif; ?>
+<div class="layanan-card">
 
-<?php if($kategori == 'semua' || $kategori == 'feed'): ?>
-<div class="layanan-card feed"
-onclick="openModal('feed')">
-<img src="https://i.pinimg.com/736x/93/66/47/936647fbb83ad7f6ae376ae354d37b1b.jpg">
-<h3>Feed Instagram</h3>
-<p>Feed Instagram modern dan menarik.</p>
+<img src="<?= $row['gambar']; ?>">
 
+<h3><?= $row['nama_layanan']; ?></h3>
+
+<p><?= $row['deskripsi']; ?></p>
 
 <div class="action-btn">
 
-<a href="paket.php?layanan=feed" class="btn-primary">
+<a
+href="paket.php?id=<?= $row['id']; ?>"
+class="btn-primary">
+
 <i class="fa-solid fa-layer-group"></i>
+
 Lihat Paket
-</a>
-</div>
-</div>
-<?php endif; ?>
 
-<?php if($kategori == 'semua' || $kategori == 'banner'): ?>
-<div class="layanan-card banner" onclick="openModal('banner')">
-<img src="https://i.pinimg.com/1200x/57/93/71/579371d3b53cd1a215f5871ea648b2ee.jpg">
-<h3>Banner</h3>
-<p>Banner promosi online maupun offline.</p>
-
-
-<div class="action-btn">
-
-<a href="paket.php?layanan=banner" class="btn-primary">
-<i class="fa-solid fa-layer-group"></i>
-Lihat Paket
 </a>
 
 </div>
-</div>
-<?php endif; ?>
-
-<?php if($kategori == 'semua' || $kategori == 'uiux'): ?>
-<div class="layanan-card uiux"
-onclick="openModal('uiux')">
-<img src="https://i.pinimg.com/736x/83/b4/1c/83b41caad8b8f92639df49c6aec99fe2.jpg">
-<h3>UI/UX Design</h3>
-<p>Desain aplikasi dan website modern.</p>
-
-
-<div class="action-btn">
-
-<a href="paket.php?layanan=uiux" class="btn-primary">
-<i class="fa-solid fa-layer-group"></i>
-Lihat Paket
-</a>
 
 </div>
-</div>
-<?php endif; ?>
+
+<?php } ?>
 </section>
 <?php include "footer.php"; ?>
 </body>

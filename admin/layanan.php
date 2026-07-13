@@ -1,6 +1,6 @@
 <?php
 include "../koneksi.php";
-
+$data = mysqli_query($koneksi,"SELECT * FROM layanan");
 
 $cari = $_GET['cari'] ?? "";
 
@@ -300,7 +300,7 @@ value="<?= $cari ?>">
 <th>Nama Layanan</th>
 <th>Deskripsi</th>
 <th>Kategori</th>
-<th>Harga</th>
+<th>Paket</th>
 <th>Aksi</th>
 
 </tr>
@@ -312,114 +312,66 @@ value="<?= $cari ?>">
 
 <tbody>
 
-
 <?php
-
-
-$no=1;
-
-
-while($row=mysqli_fetch_assoc($dataLayanan)){
-
-
+$no = 1;
+while($row = mysqli_fetch_assoc($data)){
+    $qPaket = mysqli_query($koneksi,"
+SELECT * FROM paket
+WHERE layanan_id='".$row['id']."'
+ORDER BY FIELD(nama_paket,'Basic','Standar','Premium')
+");
 ?>
-
-
 
 <tr>
 
+<td><?= $no++; ?></td>
+
+<td>
+<img src="<?= $row['gambar']; ?>" class="img-admin">
+</td>
+
+<td><?= $row['nama_layanan']; ?></td>
+
+<td><?= $row['deskripsi']; ?></td>
+
+<td><?= ucfirst($row['kategori']); ?></td>
 
 <td>
 
-<?= $no++; ?>
+<?php
+while($paket = mysqli_fetch_assoc($qPaket)){
+?>
+
+<div style="margin-bottom:8px;line-height:1.6;">
+    <b><?= $paket['nama_paket']; ?></b><br>
+    Rp <?= number_format($paket['harga'],0,',','.'); ?>
+</div>
+
+<?php } ?>
 
 </td>
 
-
-
 <td>
 
-<img src="../uploads/layanan/<?= $row['gambar']; ?>"
-class="img-admin">
-
-</td>
-
-
-
-<td>
-
-<b><?= $row['nama_layanan']; ?></b>
-
-</td>
-
-
-
-<td>
-
-<?= $row['deskripsi']; ?>
-
-</td>
-
-
-
-<td>
-
-<?= $row['kategori']; ?>
-
-</td>
-
-
-
-<td>
-
-Rp <?= number_format($row['harga'],0,',','.'); ?>
-
-</td>
-
-
-
-<td>
-
-
-<div class="action">
-
-
-<a href="edit_layanan.php?id=<?= $row['id']; ?>"
-class="btn-edit">
-
+<a href="edit_layanan.php?id=<?= $row['id']; ?>" class="btn-edit">
 <i class="fa-solid fa-pen"></i>
-
 </a>
 
-
-
 <a href="hapus_layanan.php?id=<?= $row['id']; ?>"
-class="btn-hapus"
-onclick="return confirm('Hapus layanan ini?')">
+class="btn-delete"
+onclick="return confirm('Yakin ingin menghapus layanan ini?')">
 
 <i class="fa-solid fa-trash"></i>
 
 </a>
 
-
-
-</div>
-
-
 </td>
-
-
 
 </tr>
 
-
-
 <?php } ?>
 
-
-
 </tbody>
-
 
 
 </table>
