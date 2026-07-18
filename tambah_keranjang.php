@@ -10,15 +10,30 @@ if(!isset($_SESSION['user_id'])){
 $user_id = $_SESSION['user_id'];
 
 // Ambil data dari URL
-$layanan = mysqli_real_escape_string($koneksi, $_GET['layanan'] ?? '');
-$paket   = mysqli_real_escape_string($koneksi, $_GET['paket'] ?? '');
-$harga   = (int)($_GET['harga'] ?? 0);
-$gambar  = mysqli_real_escape_string($koneksi, $_GET['gambar'] ?? '');
+$id = (int)($_GET['id'] ?? 0);
 
-// Validasi
-if($layanan == "" || $paket == "" || $harga <= 0){
-    die("Data layanan tidak lengkap.");
+$query = mysqli_query($koneksi,"
+SELECT
+    layanan.nama_layanan,
+    layanan.gambar,
+    paket.nama_paket,
+    paket.harga
+FROM paket
+JOIN layanan
+ON layanan.id = paket.layanan_id
+WHERE paket.id='$id'
+");
+
+$data = mysqli_fetch_assoc($query);
+
+if(!$data){
+    die("Data paket tidak ditemukan.");
 }
+
+$layanan = $data['nama_layanan'];
+$paket   = $data['nama_paket'];
+$harga   = $data['harga'];
+$gambar  = $data['gambar'];
 
 // Cek apakah layanan + paket sudah ada
 $cek = mysqli_query($koneksi,"

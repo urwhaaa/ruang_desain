@@ -16,6 +16,29 @@ WHERE id='$user_id'
 ");
 
 $userData = mysqli_fetch_assoc($user);
+$layanan = mysqli_real_escape_string($koneksi, $_GET['layanan'] ?? '');
+$paket   = mysqli_real_escape_string($koneksi, $_GET['paket'] ?? '');
+$harga   = (int)($_GET['harga'] ?? 0);
+
+if($layanan != "" && $paket != ""){
+
+    $queryHarga = mysqli_query($koneksi,"
+        SELECT paket.harga
+        FROM paket
+        JOIN layanan
+        ON layanan.id = paket.layanan_id
+        WHERE layanan.nama_layanan='$layanan'
+        AND paket.nama_paket='$paket'
+    ");
+
+    if($queryHarga && mysqli_num_rows($queryHarga) > 0){
+
+        $dataHarga = mysqli_fetch_assoc($queryHarga);
+        $harga = $dataHarga['harga'];
+
+    }
+
+}
 if(isset($_POST['kirim'])){
 
     $user_id = $_SESSION['user_id'];
@@ -26,27 +49,7 @@ WHERE id='$user_id'
 ");
 
 $userData = mysqli_fetch_assoc($user);
-$layanan = $_GET['layanan'] ?? '';
-$paket = $_GET['paket'] ?? '';
 
-$harga = 0;
-
-if($layanan != "" && $paket != ""){
-
-    $queryHarga = mysqli_query($koneksi,"
-        SELECT harga 
-        FROM layanan 
-        WHERE nama_layanan='$layanan'
-        AND paket='$paket'
-    ");
-
-    $dataHarga = mysqli_fetch_assoc($queryHarga);
-
-    if($dataHarga){
-        $harga = $dataHarga['harga'];
-    }
-
-}
     $nama = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $email = mysqli_real_escape_string($koneksi, $_POST['email']);
     $no_hp = mysqli_real_escape_string($koneksi, $_POST['no_hp']);
@@ -372,16 +375,14 @@ value="<?= $_GET['layanan'] ?? ''; ?>">
 
 function showPayment(type){
 
+
     document.getElementById("bank-list").style.display = "none";
     document.getElementById("ewallet-list").style.display = "none";
 
-    document.getElementById("payment-info").innerHTML = "";
-    document.getElementById("upload-payment").style.display = "none";
-
-    if(type == "bank"){
-        document.getElementById("bank-list").style.display = "block";
+    if(type=="bank"){
+        document.getElementById("bank-list").style.display="block";
     }else{
-        document.getElementById("ewallet-list").style.display = "block";
+        document.getElementById("ewallet-list").style.display="block";
     }
 
 }

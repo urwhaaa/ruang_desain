@@ -1801,9 +1801,8 @@ color:#155724;
 }
 
 .payment-card input{
-
-    display:none;
-
+    position: absolute;
+    opacity: 0;
 }
 
 .payment-content{

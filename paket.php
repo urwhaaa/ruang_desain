@@ -3,47 +3,69 @@ include "koneksi.php";
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-$qLayanan = mysqli_query($koneksi,"
-SELECT *
-FROM layanan
-WHERE id='$id'
-");
+$mode_info = false;
 
-if(mysqli_num_rows($qLayanan)==0){
-
-    die("Layanan tidak ditemukan");
-
-}
-
-$layanan = mysqli_fetch_assoc($qLayanan);
-
-$nama_layanan = $layanan['nama_layanan'];
-$gambar        = $layanan['gambar'];
-$deskripsi     = $layanan['deskripsi'];
+$nama_layanan = "Paket Desain";
+$gambar = "";
+$deskripsi = "";
 
 $basic = 0;
 $standar = 0;
 $premium = 0;
 
-$qPaket = mysqli_query($koneksi,"
-SELECT *
-FROM paket
-WHERE layanan_id='$id'
-");
+if($id > 0){
+
+    $qLayanan = mysqli_query($koneksi,"
+    SELECT *
+    FROM layanan
+    WHERE id='$id'
+    ");
+
+    if(mysqli_num_rows($qLayanan)>0){
+
+        $layanan = mysqli_fetch_assoc($qLayanan);
+
+        $nama_layanan = $layanan['nama_layanan'];
+        $gambar = $layanan['gambar'];
+        $deskripsi = $layanan['deskripsi'];
+
+        $qPaket = mysqli_query($koneksi,"
+        SELECT *
+        FROM paket
+        WHERE layanan_id='$id'
+        ");
+
+      $basic = 0;
+$standar = 0;
+$premium = 0;
+
+$id_basic = 0;
+$id_standar = 0;
+$id_premium = 0;
 
 while($p=mysqli_fetch_assoc($qPaket)){
 
     if($p['nama_paket']=="Basic"){
-        $basic=$p['harga'];
+        $basic = $p['harga'];
+        $id_basic = $p['id'];
     }
 
     if($p['nama_paket']=="Standar"){
-        $standar=$p['harga'];
+        $standar = $p['harga'];
+        $id_standar = $p['id'];
     }
 
     if($p['nama_paket']=="Premium"){
-        $premium=$p['harga'];
+        $premium = $p['harga'];
+        $id_premium = $p['id'];
     }
+
+}
+    }
+
+}else{
+
+    $mode_info = true;
 
 }
 ?>
@@ -146,7 +168,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 <h1><?= $nama_layanan; ?></h1>
 
 <p>
-    Harga Paket Dapat Berubah Sesuai Jenis Layanan Yang Dipilih. Silahkan Pilih Paket Terbaik Sesuai Kebutuhan Anda!
+<?php if($mode_info){ ?>
+Harga paket dapat berubah sesuai layanan yang Anda pilih.
+Silakan klik tombol <b>Lihat Layanan</b> untuk memilih layanan terlebih dahulu.
+<?php }else{ ?>
+Harga Paket Dapat Berubah Sesuai Jenis Layanan Yang Dipilih.
+Silahkan Pilih Paket Terbaik Sesuai Kebutuhan Anda!
+<?php } ?>
 </p>
 
 <section class="package-grid">
@@ -157,7 +185,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 <h3>BASIC</h3>
 
 <div class="price">
+<?php if($mode_info){ ?>
+Menyesuaikan Layanan
+<?php }else{ ?>
 Rp <?= number_format($basic,0,",","."); ?>
+<?php } ?>
 </div>
 
 <ul>
@@ -169,13 +201,23 @@ Rp <?= number_format($basic,0,",","."); ?>
 
 <div class="package-action">
 
-<a href="cek_login.php?id=<?= $id ?>&paket=Basic" class="btn-primary">
+<?php if($mode_info){ ?>
+
+<a href="layanan.php" class="btn-primary">
+    Lihat Layanan
+</a>
+
+<?php }else{ ?>
+
+<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Basic&harga=<?= $basic ?>" class="btn-primary">
     Pesan Sekarang
 </a>
 
-<a href="tambah_keranjang.php?id=<?= $id ?>&paket=Basic" class="btn-cart">
+<a href="tambah_keranjang.php?id=<?= $id_basic ?>" class="btn-cart">
     <i class="fa-solid fa-cart-shopping"></i>
 </a>
+
+<?php } ?>
 
 </div>
 
@@ -191,7 +233,11 @@ Rp <?= number_format($basic,0,",","."); ?>
 <h3>STANDAR</h3>
 
 <div class="price">
+<?php if($mode_info){ ?>
+Menyesuaikan Layanan
+<?php }else{ ?>
 Rp <?= number_format($standar,0,",","."); ?>
+<?php } ?>
 </div>
 
 <ul>
@@ -204,13 +250,23 @@ Rp <?= number_format($standar,0,",","."); ?>
 
 <div class="package-action">
 
-<a href="cek_login.php?id=<?= $id ?>&paket=Standar" class="btn-primary">
+<?php if($mode_info){ ?>
+
+<a href="layanan.php" class="btn-primary">
+    Lihat Layanan
+</a>
+
+<?php }else{ ?>
+
+<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Basic&harga=<?= $basic ?>" class="btn-primary">
     Pesan Sekarang
 </a>
 
-<a href="tambah_keranjang.php?id=<?= $id ?>&paket=Standar" class="btn-cart">
+<a href="tambah_keranjang.php?id=<?= $id_standar ?>" class="btn-cart">
     <i class="fa-solid fa-cart-shopping"></i>
 </a>
+
+<?php } ?>
 
 </div>
 
@@ -223,7 +279,11 @@ Rp <?= number_format($standar,0,",","."); ?>
 <h3>PREMIUM</h3>
 
 <div class="price">
+<?php if($mode_info){ ?>
+Menyesuaikan Layanan
+<?php }else{ ?>
 Rp <?= number_format($premium,0,",","."); ?>
+<?php } ?>
 </div>
 
 <ul>
@@ -236,13 +296,23 @@ Rp <?= number_format($premium,0,",","."); ?>
 
 <div class="package-action">
 
-<a href="cek_login.php?id=<?= $id ?>&paket=Premium" class="btn-primary">
+<?php if($mode_info){ ?>
+
+<a href="layanan.php" class="btn-primary">
+    Lihat Layanan
+</a>
+
+<?php }else{ ?>
+
+<a href="cek_login.php?layanan=<?= urlencode($nama_layanan) ?>&paket=Basic&harga=<?= $basic ?>" class="btn-primary">
     Pesan Sekarang
 </a>
 
-<a href="tambah_keranjang.php?id=<?= $id ?>&paket=Premium" class="btn-cart">
+<a href="tambah_keranjang.php?id=<?= $paket['id']; ?>" class="btn-cart">
     <i class="fa-solid fa-cart-shopping"></i>
 </a>
+
+<?php } ?>
 
 </div>
 

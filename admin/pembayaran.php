@@ -21,9 +21,25 @@ $row = mysqli_fetch_assoc($data);
 if(isset($_POST['verifikasi'])){
 
 mysqli_query($koneksi,"
-UPDATE pesanan 
+UPDATE pesanan
 SET status_pembayaran='Lunas'
 WHERE id='$id'
+");
+
+$user_id = $row['user_id'];
+
+mysqli_query($koneksi,"
+INSERT INTO notifikasi
+(user_id, tujuan, pesanan_id, jenis, pesan, status)
+VALUES
+(
+'$user_id',
+'user',
+'$id',
+'Pembayaran',
+'💳 Pembayaran Anda telah diverifikasi.',
+'belum_dibaca'
+)
 ");
 
 echo "
@@ -41,9 +57,25 @@ window.location='pesanan.php';
 if(isset($_POST['tolak'])){
 
 mysqli_query($koneksi,"
-UPDATE pesanan 
+UPDATE pesanan
 SET status_pembayaran='Belum Bayar'
 WHERE id='$id'
+");
+
+$user_id = $row['user_id'];
+
+mysqli_query($koneksi,"
+INSERT INTO notifikasi
+(user_id, tujuan, pesanan_id, jenis, pesan, status)
+VALUES
+(
+'$user_id',
+'user',
+'$id',
+'Pembayaran',
+'❌ Bukti pembayaran ditolak. Silakan upload ulang.',
+'belum_dibaca'
+)
 ");
 
 echo "
