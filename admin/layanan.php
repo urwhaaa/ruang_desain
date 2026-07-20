@@ -222,7 +222,13 @@ background:#2980b9;
 background:#c0392b;
 
 }
-
+.gambar-layanan{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:10px;
+    border:1px solid #ddd;
+}
 
 </style>
 
@@ -327,7 +333,15 @@ ORDER BY FIELD(nama_paket,'Basic','Standar','Premium')
 <td><?= $no++; ?></td>
 
 <td>
-<img src="<?= $row['gambar']; ?>" class="img-admin">
+<?php
+if(filter_var($row['gambar'], FILTER_VALIDATE_URL)){
+    $gambar = $row['gambar'];
+}else{
+    $gambar = "../assets/css/img/layanan/".$row['gambar'];
+}
+?>
+
+<img src="<?= $gambar; ?>" class="gambar-layanan">
 </td>
 
 <td><?= $row['nama_layanan']; ?></td>

@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
 
-        $folder = "../uploads/layanan/";
+        $folder = "../assets/css/img/layanan/";
 
         if (!file_exists($folder)) {
             mkdir($folder, 0777, true);

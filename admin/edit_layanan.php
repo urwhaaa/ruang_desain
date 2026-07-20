@@ -3,21 +3,21 @@ include "../koneksi.php";
 
 $id = (int)$_GET['id'];
 
-$data = mysqli_query($koneksi,"SELECT * FROM portofolio WHERE id='$id'");
+$data = mysqli_query($koneksi,"SELECT * FROM layanan WHERE id='$id'");
 $row = mysqli_fetch_assoc($data);
 
 if(!$row){
-    header("Location: portofolio.php");
+    header("Location: layanan.php");
     exit;
 }
 
 if(isset($_POST['update'])){
 
-    $judul = mysqli_real_escape_string($koneksi,$_POST['judul']);
     $kategori = mysqli_real_escape_string($koneksi,$_POST['kategori']);
+    $nama = mysqli_real_escape_string($koneksi,$_POST['nama_layanan']);
     $deskripsi = mysqli_real_escape_string($koneksi,$_POST['deskripsi']);
 
-    $gambarLama = $row['gambar'];
+    $gambarBaru = $row['gambar'];
 
     if($_FILES['gambar']['name']!=""){
 
@@ -25,31 +25,25 @@ if(isset($_POST['update'])){
 
         move_uploaded_file(
             $_FILES['gambar']['tmp_name'],
-            "../assets/css/img/portofolio/".$gambarBaru
+            "../assets/css/img/layanan/".$gambarBaru
         );
 
-        if(file_exists("../assets/css/img/portofolio/".$gambarLama)){
-            unlink("../assets/css/img/portofolio/".$gambarLama);
+        if($row['gambar']!="" && file_exists("../assets/css/img/layanan/".$row['gambar'])){
+            unlink("../assets/css/img/layanan/".$row['gambar']);
         }
-
-    }else{
-
-        $gambarBaru = $gambarLama;
-
     }
 
     mysqli_query($koneksi,"
-    UPDATE portofolio SET
-    judul='$judul',
+    UPDATE layanan SET
     kategori='$kategori',
+    nama_layanan='$nama',
     deskripsi='$deskripsi',
     gambar='$gambarBaru'
     WHERE id='$id'
     ");
 
-    header("Location: portofolio.php");
+    header("Location: layanan.php");
     exit;
-
 }
 ?>
 
@@ -57,7 +51,7 @@ if(isset($_POST['update'])){
 <html>
 <head>
 
-<title>Edit Portofolio</title>
+<title>Edit Layanan</title>
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -101,7 +95,7 @@ resize:none;
 }
 
 .preview{
-width:150px;
+width:180px;
 border-radius:10px;
 margin-top:10px;
 }
@@ -109,11 +103,12 @@ margin-top:10px;
 .btn{
 background:#3b82f6;
 color:#fff;
-border:none;
 padding:12px 25px;
+border:none;
 border-radius:8px;
 cursor:pointer;
 font-size:15px;
+font-weight:600;
 }
 
 .btn:hover{
@@ -131,7 +126,7 @@ background:#2563eb;
 <div class="main">
 
 <div class="top-bar">
-<h1>Edit Portofolio</h1>
+<h1>Edit Layanan</h1>
 </div>
 
 <div class="form-card">
@@ -140,35 +135,25 @@ background:#2563eb;
 
 <div class="form-group">
 
-<label>Judul</label>
+<label>Kategori</label>
 
 <input
 type="text"
-name="judul"
-value="<?= htmlspecialchars($row['judul']); ?>"
+name="kategori"
+value="<?= htmlspecialchars($row['kategori']); ?>"
 required>
 
 </div>
 
 <div class="form-group">
 
-<label>Kategori</label>
+<label>Nama Layanan</label>
 
-<select name="kategori" required>
-
-<option <?= $row['kategori']=="Logo"?"selected":""; ?>>Logo</option>
-
-<option <?= $row['kategori']=="Poster"?"selected":""; ?>>Poster</option>
-
-<option <?= $row['kategori']=="Banner"?"selected":""; ?>>Banner</option>
-
-<option <?= $row['kategori']=="Feed Instagram"?"selected":""; ?>>Feed Instagram</option>
-
-<option <?= $row['kategori']=="UI/UX"?"selected":""; ?>>UI/UX</option>
-
-<option <?= $row['kategori']=="Lainnya"?"selected":""; ?>>Lainnya</option>
-
-</select>
+<input
+type="text"
+name="nama_layanan"
+value="<?= htmlspecialchars($row['nama_layanan']); ?>"
+required>
 
 </div>
 
@@ -177,7 +162,8 @@ required>
 <label>Deskripsi</label>
 
 <textarea
-name="deskripsi"><?= htmlspecialchars($row['deskripsi']); ?></textarea>
+name="deskripsi"
+required><?= htmlspecialchars($row['deskripsi']); ?></textarea>
 
 </div>
 
@@ -188,14 +174,14 @@ name="deskripsi"><?= htmlspecialchars($row['deskripsi']); ?></textarea>
 <br>
 
 <img
-src="../assets/css/img/portofolio/<?= $row['gambar']; ?>"
+src="../assets/css/img/layanan/<?= $row['gambar']; ?>"
 class="preview">
 
 </div>
 
 <div class="form-group">
 
-<label>Ganti Gambar (Opsional)</label>
+<label>Ganti Gambar</label>
 
 <input
 type="file"
@@ -211,7 +197,7 @@ class="btn">
 
 <i class="fa-solid fa-floppy-disk"></i>
 
-Update Portofolio
+Update Layanan
 
 </button>
 

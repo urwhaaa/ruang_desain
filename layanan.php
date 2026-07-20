@@ -95,7 +95,15 @@ while($row=mysqli_fetch_assoc($data)){
 
 <div class="layanan-card">
 
-<img src="<?= $row['gambar']; ?>">
+<?php
+if(filter_var($row['gambar'], FILTER_VALIDATE_URL)){
+    $gambar = $row['gambar'];
+}else{
+    $gambar = "assets/css/img/layanan/".$row['gambar'];
+}
+?>
+
+<img src="<?= $gambar; ?>">
 
 <h3><?= $row['nama_layanan']; ?></h3>
 
