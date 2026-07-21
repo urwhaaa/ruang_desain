@@ -243,15 +243,16 @@ value="<?= $_GET['layanan'] ?? ''; ?>">
         readonly>
 </div>
 
-    <div class="form-group">
-        <label>Deskripsi Pesanan</label>
+   <div class="form-group">
 
-        <textarea
-            name="deskripsi"
-            rows="5"
-            placeholder="Jelaskan kebutuhan desain Anda"
-            required></textarea>
-    </div>
+    <label>Catatan Pesanan</label>
+
+    <textarea
+        name="deskripsi"
+        rows="5"
+        placeholder="Jelaskan kebutuhan desain Anda (Opsional)"></textarea>
+
+</div>
 
     <div class="form-group">
         <label>Upload Referensi</label>
@@ -345,9 +346,10 @@ value="<?= $_GET['layanan'] ?? ''; ?>">
         <label>Upload Bukti Pembayaran</label>
 
         <input
-            type="file"
-            name="bukti_pembayaran"
-            accept=".jpg,.jpeg,.png,.pdf">
+type="file"
+name="bukti_pembayaran"
+accept=".jpg,.jpeg,.png,.pdf"
+required>
 
         <small class="payment-text">
 

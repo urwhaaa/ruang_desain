@@ -262,7 +262,7 @@ Rp <?= number_format($item['subtotal'],0,",","."); ?>
 
 <div class="form-group">
 
-<label>Deskripsi Pesanan</label>
+    <label>Catatan Pesanan</label>
 
 <p style="font-size:13px;color:#777;margin-bottom:15px;">
 Silakan isi detail kebutuhan untuk setiap layanan di bawah ini.
@@ -281,12 +281,13 @@ Silakan isi detail kebutuhan untuk setiap layanan di bawah ini.
 <textarea
 name="deskripsi[]"
 rows="4"
-placeholder="Contoh:
+placeholder="Opsional (boleh dikosongkan)
+
+Contoh:
 - Warna yang diinginkan
 - Konsep desain
 - Ukuran
-- Referensi lainnya"
-required></textarea>
+- Referensi lainnya"></textarea>
 
 </div>
 

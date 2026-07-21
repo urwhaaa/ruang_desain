@@ -1,4 +1,5 @@
 <?php
+include "auth.php";
 include "../koneksi.php";
 
 $cari = $_GET['cari'] ?? '';
@@ -151,6 +152,9 @@ background:#dc2626;
 .search-box button:hover{
     background:#2563eb;
 }
+.table-container .search-box{
+    margin-bottom:20px;
+}
 </style>
 
 </head>
@@ -164,7 +168,18 @@ background:#dc2626;
 
 <h1>Data Portofolio</h1>
 
-<div style="display:flex;gap:12px;align-items:center;">
+<a href="tambah_portofolio.php" class="add-btn">
+
+<i class="fa-solid fa-plus"></i>
+
+Tambah Portofolio
+
+</a>
+
+</div>
+
+<div class="table-container">
+
 
 <form method="GET" class="search-box">
 
@@ -182,19 +197,6 @@ value="<?= htmlspecialchars($cari); ?>">
 
 </form>
 
-<a href="tambah_portofolio.php" class="add-btn">
-
-<i class="fa-solid fa-plus"></i>
-
-Tambah Portofolio
-
-</a>
-
-</div>
-
-</div>
-
-<div class="table-container">
 
 <table>
 

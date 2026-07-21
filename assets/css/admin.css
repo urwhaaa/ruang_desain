@@ -490,3 +490,38 @@ border-radius:10px;
     transform:scale(1.03);
     opacity:0.9;
 }
+.admin-info{
+
+display:flex;
+align-items:center;
+gap:12px;
+
+background:rgba(255,255,255,.12);
+
+padding:12px;
+
+margin:15px;
+
+border-radius:10px;
+
+color:#fff;
+
+}
+
+.admin-info i{
+
+font-size:34px;
+
+}
+
+.admin-info b{
+
+font-size:15px;
+
+}
+
+.admin-info small{
+
+color:#ddd;
+
+}

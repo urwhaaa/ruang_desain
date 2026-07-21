@@ -1,3 +1,14 @@
+<?php
+
+include "koneksi.php";
+
+$setting = mysqli_fetch_assoc(
+    mysqli_query($koneksi,"
+    SELECT * FROM pengaturan LIMIT 1
+    ")
+);
+
+?>
 <style>
 .footer{
     background:#18122B;
@@ -60,13 +71,22 @@
     <div class="footer-container">
 
         <div class="footer-box">
-            <h2>Ruang Desain</h2>
+<?php if(!empty($setting['logo'])){ ?>
 
-            <p>
-                Ruang Desain adalah tempat terbaik untuk membantu
-                mewujudkan ide kreatifmu menjadi desain yang menarik,
-                modern, dan profesional.
-            </p>
+<img 
+src="uploads/logo/<?= $setting['logo']; ?>"
+width="70">
+
+<?php } ?>
+
+
+<h2>
+<?= $setting['nama_website']; ?>
+</h2>
+
+<p>
+<?= $setting['alamat']; ?>
+</p>
         </div>
 
         <div class="footer-box">
@@ -91,9 +111,17 @@
         <div class="footer-box">
             <h3>Kontak</h3>
 
-            <p>📍 Mataram, Lombok NTB</p>
-            <p>📞 082146495554</p>
-            <p>✉️ ruangdesain@gmail.com</p>
+<p>
+📍 <?= $setting['alamat']; ?>
+</p>
+
+<p>
+📞 <?= $setting['telepon']; ?>
+</p>
+
+<p>
+✉️ <?= $setting['email']; ?>
+</p>
         </div>
 
     </div>

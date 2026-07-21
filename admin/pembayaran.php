@@ -1,4 +1,5 @@
 <?php
+include "auth.php";
 include "../koneksi.php";
 
 
@@ -56,35 +57,53 @@ window.location='pesanan.php';
 // tombol tolak
 if(isset($_POST['tolak'])){
 
-mysqli_query($koneksi,"
-UPDATE pesanan
-SET status_pembayaran='Belum Bayar'
-WHERE id='$id'
-");
+$alasan = mysqli_real_escape_string(
+    $koneksi,
+    $_POST['alasan']
+);
 
-$user_id = $row['user_id'];
+if(empty($alasan)){
 
-mysqli_query($koneksi,"
-INSERT INTO notifikasi
-(user_id, tujuan, pesanan_id, jenis, pesan, status)
-VALUES
-(
-'$user_id',
-'user',
-'$id',
-'Pembayaran',
-'❌ Bukti pembayaran ditolak. Silakan upload ulang.',
-'belum_dibaca'
-)
-");
+    echo "
+    <script>
+    alert('Alasan penolakan wajib diisi!');
+    </script>
+    ";
 
-echo "
-<script>
-alert('Pembayaran ditolak');
-window.location='pesanan.php';
-</script>
-";
+}else{
 
+    mysqli_query($koneksi,"
+    UPDATE pesanan
+    SET status_pembayaran='Belum Bayar'
+    WHERE id='$id'
+    ");
+
+    $user_id = $row['user_id'];
+
+    $pesan = "❌ Bukti pembayaran Anda ditolak.\n\nAlasan: ".$alasan."\n\nSilakan upload ulang bukti pembayaran.";
+
+    mysqli_query($koneksi,"
+    INSERT INTO notifikasi
+    (user_id, tujuan, pesanan_id, jenis, pesan, status)
+    VALUES
+    (
+    '$user_id',
+    'user',
+    '$id',
+    'Pembayaran',
+    '$pesan',
+    'belum_dibaca'
+    )
+    ");
+
+    echo "
+    <script>
+    alert('Pembayaran ditolak');
+    window.location='pesanan.php';
+    </script>
+    ";
+
+}
 }
 
 
@@ -264,7 +283,24 @@ class="bukti"
 
 
 <form method="POST">
+<div style="margin-bottom:20px;">
 
+<label><b>Alasan Penolakan</b></label>
+
+<textarea
+name="alasan"
+placeholder="Masukkan alasan penolakan..."
+style="
+width:100%;
+height:120px;
+padding:12px;
+border:1px solid #ddd;
+border-radius:10px;
+resize:none;
+margin-top:8px;
+"></textarea>
+
+</div>
 
 <button 
 name="verifikasi"

@@ -1,6 +1,6 @@
 <?php
+include "auth.php";
 include "../koneksi.php";
-$data = mysqli_query($koneksi,"SELECT * FROM layanan");
 
 $cari = $_GET['cari'] ?? "";
 
@@ -282,7 +282,7 @@ value="<?= $cari ?>">
 
 
 
-<button>
+<button type="submit">
 
 <i class="fa-solid fa-search"></i>
 
@@ -320,7 +320,7 @@ value="<?= $cari ?>">
 
 <?php
 $no = 1;
-while($row = mysqli_fetch_assoc($data)){
+while($row = mysqli_fetch_assoc($dataLayanan)){
     $qPaket = mysqli_query($koneksi,"
 SELECT * FROM paket
 WHERE layanan_id='".$row['id']."'
